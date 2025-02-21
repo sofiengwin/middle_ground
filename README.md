@@ -48,3 +48,7 @@ export default tseslint.config({
   },
 })
 ```
+
+Create a react application that has form field for a main address and 10 other addresses. The app should use Google maps to display the relative distance of all the other addresses to the main address
+
+Also, add directions from all addresses provided to the main address to the map
