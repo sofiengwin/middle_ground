@@ -3,12 +3,12 @@ import {useCallback, useEffect, useState} from 'react';
 import Directions from './Directions';
 
 const API_KEY: string = "AIzaSyCC-eTNbPrglZ_DviSFac6Qi-Mep6vI6gs"
-const george = {lat: 49.204542571381296, lng: -122.90846930109086}
-const sofien = {lat: 49.107051518586125, lng: -122.80181147410804}
-const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514}
-const tj = {lat: 49.276060472781246, lng: -122.82504594341755}
-const endurance = {lat: 49.19354056002209, lng: -122.79310430109112}
-const center = {lat: 49.18140440608156, lng: -122.84811819468837}
+const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
+const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
+const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514, address: ''}
+const tj = {lat: 49.276060472781246, lng: -122.82504594341755, address: ''}
+const endurance = {lat: 49.19354056002209, lng: -122.79310430109112, address: ''}
+const center = {lat: 49.18140440608156, lng: -122.84811819468837, address: ''}
 
 // Array of colors for different routes
 // const ROUTE_COLORS = [
@@ -40,7 +40,7 @@ const CustomMap = () => {
   // const [searchQuery, setSearchQuery] = useState("")
   // const [searchResults, setSearchResults] = useState<Location[]>([])
   // const [selectedPlace, setSelectedPlace] = useState<Location | null>(null)
-  const [otherAddresses, setOtherAddresses] = useState<Location[]>(Array(10).fill({ address: "", lat: 0, lng: 0 }))
+  const [otherAddresses, setOtherAddresses] = useState<Location[]>([george, sofien, bodunde, tj, endurance])
   const [isCalculating, setIsCalculating] = useState(false)
   // const [isSearching, setIsSearching] = useState(false)
   // const [mapCenter, setMapCenter] = useState({ lat: 40.7128, lng: -74.006 }) // Default to NYC
@@ -101,13 +101,13 @@ const CustomMap = () => {
       // Calculate distances
       const result = await service.getDistanceMatrix({
         origins: validAddresses.map((addr) => ({ lat: addr.lat, lng: addr.lng })),
-        destinations: [{ lat: selectedPlace.lat, lng: selectedPlace.lng }],
+        destinations: [{ lat: center.lat, lng: center.lng }],
         travelMode: window.google.maps.TravelMode.DRIVING,
       })
 
       // Calculate directions for each valid address
       const newAddresses = [...otherAddresses]
-      const directionsPromises = validAddresses.map((addr, index) => calculateDirections(addr, selectedPlace, index))
+      const directionsPromises = validAddresses.map((addr, index) => calculateDirections(addr, center, index))
 
       const directionsResults = await Promise.all(directionsPromises)
 
