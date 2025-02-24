@@ -2,7 +2,7 @@ import {APIProvider, Map, AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.
 import {useCallback, useEffect, useState} from 'react';
 import Directions from './Directions';
 
-const API_KEY: string = "AIzaSyCC-eTNbPrglZ_DviSFac6Qi-Mep6vI6gs"
+const API_KEY: string = import.meta.env.VITE_GOOGLE_MAP_KEY
 const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
 const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
 const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514, address: ''}
