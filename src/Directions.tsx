@@ -62,6 +62,7 @@ function Directions({origin, destination}: {origin: google.maps.LatLngLiteral; d
         travelMode: google.maps.TravelMode.DRIVING,
       })
       .then(response => {
+        console.log({response});
         directionsRenderer.setDirections(response);
         setRoutes(response.routes);
       });

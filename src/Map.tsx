@@ -91,11 +91,13 @@ const CustomMap = () => {
     setIsCalculating(true)
     const service = new window.google.maps.DistanceMatrixService()
 
-    const validAddresses = otherAddresses.filter((addr) => addr.address)
-    if (validAddresses.length === 0) {
-      setIsCalculating(false)
-      return
-    }
+    // const validAddresses = otherAddresses.filter((addr) => addr.address)
+    const validAddresses = otherAddresses
+    console.log({validAddresses})
+    // if (validAddresses.length === 0) {
+    //   setIsCalculating(false)
+    //   return
+    // }
 
     try {
       // Calculate distances
@@ -110,7 +112,7 @@ const CustomMap = () => {
       const directionsPromises = validAddresses.map((addr, index) => calculateDirections(addr, center, index))
 
       const directionsResults = await Promise.all(directionsPromises)
-
+      console.log({directionsResults, result})
       let validIndex = 0
       newAddresses.forEach((addr, index) => {
         if (addr.address) {
@@ -162,6 +164,8 @@ const CustomMap = () => {
           <AdvancedMarker ref={markerRef} position={bodunde} />
           <AdvancedMarker ref={markerRef} position={tj} />
           <Directions origin={george} destination={center} />
+          {/* <Directions origin={endurance} destination={center} />
+          <Directions origin={tj} destination={center} /> */}
         </Map>
 
         {/* <InfoWindow
