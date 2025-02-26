@@ -5,10 +5,6 @@ import {
   useMap
 } from '@vis.gl/react-google-maps';
 
-
-const endurance = {lat: 49.19354056002209, lng: -122.79310430109112}
-const center = {lat: 49.18140440608156, lng: -122.84811819468837}
-
 function Directions({origin, destination}: {origin: google.maps.LatLngLiteral; destination: google.maps.LatLngLiteral}) {
   const map = useMap();
   const routesLibrary = useMapsLibrary('routes');
@@ -66,19 +62,6 @@ function Directions({origin, destination}: {origin: google.maps.LatLngLiteral; d
         directionsRenderer.setDirections(response);
         setRoutes(response.routes);
       });
-
-    // Second
-    directionsService
-      .route({
-        origin: endurance,
-        destination: center,
-        travelMode: google.maps.TravelMode.DRIVING,
-      })
-      .then(response => {
-        directionsRenderer.setDirections(response);
-        setRoutes([...response.routes, ...routes]);
-      });
-
     return () => directionsRenderer.setMap(null);
   }, [directionsService, directionsRenderer]);
 
