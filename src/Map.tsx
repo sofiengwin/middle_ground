@@ -1,8 +1,8 @@
-import {APIProvider, Map, AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-google-maps';
+import {Map, AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-google-maps';
 import {useCallback, useEffect, useState} from 'react';
-import Directions from './Directions';
+// import Directions from './Directions';
+import { useDirections } from './useDirections';
 
-const API_KEY: string = import.meta.env.VITE_GOOGLE_MAP_KEY
 const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
 const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
 const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514, address: ''}
@@ -42,6 +42,7 @@ const CustomMap = () => {
   // const [selectedPlace, setSelectedPlace] = useState<Location | null>(null)
   const [otherAddresses, setOtherAddresses] = useState<Location[]>([george, sofien, bodunde, tj, endurance])
   const [isCalculating, setIsCalculating] = useState(false)
+  const setDirections = useDirections();
   // const [isSearching, setIsSearching] = useState(false)
   // const [mapCenter, setMapCenter] = useState({ lat: 40.7128, lng: -74.006 }) // Default to NYC
   // const [mapZoom, setMapZoom] = useState(12)
@@ -113,19 +114,29 @@ const CustomMap = () => {
 
       const directionsResults = await Promise.all(directionsPromises)
       console.log({directionsResults, result})
-      let validIndex = 0
-      newAddresses.forEach((addr, index) => {
-        if (addr.address) {
-          if (result.rows[validIndex].elements[0].status === "OK") {
-            newAddresses[index] = {
-              ...newAddresses[index],
-              distance: result.rows[validIndex].elements[0].distance.text,
-              directions: directionsResults[validIndex],
-            }
+      // let validIndex = 0
+      // newAddresses.forEach((addr, index) => {
+      //   if (addr.address) {
+      //     if (result.rows[validIndex].elements[0].status === "OK") {
+      //       newAddresses[index] = {
+      //         ...newAddresses[index],
+      //         distance: result.rows[validIndex].elements[0].distance.text,
+      //         directions: directionsResults[validIndex],
+      //       }
+      //     }
+      //     validIndex++
+      //   }
+      // })
+
+      if(directionsResults) {
+        for(let i = 0; i < directionsResults.length; i++) {
+          const direction = directionsResults[i]
+          console.log({direction})
+          if (direction) {
+            setDirections({routes: direction.routes, request: direction.request});
           }
-          validIndex++
         }
-      })
+      }
 
       setOtherAddresses(newAddresses)
     } catch (error) {
@@ -149,33 +160,23 @@ const CustomMap = () => {
   return (
     <>
       <button onClick={calculateDistances}>Calculate</button>
-      <APIProvider apiKey={API_KEY}>
-        <Map
-          zoom={12}
-          center={center}
-          style={{width: '100vw', height: '100vh'}}
-          mapId="map"
-        >
-          <AdvancedMarker ref={markerRef} position={endurance}>
-            <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-          </AdvancedMarker>
-          <AdvancedMarker ref={markerRef} position={george} />
-          <AdvancedMarker ref={markerRef} position={sofien} />
-          <AdvancedMarker ref={markerRef} position={bodunde} />
-          <AdvancedMarker ref={markerRef} position={tj} />
-          <Directions origin={george} destination={center} />
-          {/* <Directions origin={endurance} destination={center} />
-          <Directions origin={tj} destination={center} /> */}
-        </Map>
-
-        {/* <InfoWindow
-          anchor={marker}
-          pixelOffset={[0, -2]}
-          onCloseClick={() => {}}>
-          <h2>Marker {}</h2>
-          <p>Some arbitrary html to be rendered into the InfoWindow.</p>
-        </InfoWindow> */}
-      </APIProvider>
+      <Map
+        zoom={12}
+        center={center}
+        style={{width: '100vw', height: '100vh'}}
+        mapId="map"
+      >
+        <AdvancedMarker ref={markerRef} position={endurance}>
+          <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+        </AdvancedMarker>
+        <AdvancedMarker ref={markerRef} position={george} />
+        <AdvancedMarker ref={markerRef} position={sofien} />
+        <AdvancedMarker ref={markerRef} position={bodunde} />
+        <AdvancedMarker ref={markerRef} position={tj} />
+        {/* <Directions origin={george} destination={center} /> */}
+        {/* <Directions origin={endurance} destination={center} />
+        <Directions origin={tj} destination={center} /> */}
+      </Map>
     </>
   );
 };
