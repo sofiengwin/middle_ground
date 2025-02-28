@@ -11,18 +11,18 @@ const endurance = {lat: 49.19354056002209, lng: -122.79310430109112, address: ''
 const center = {lat: 49.18140440608156, lng: -122.84811819468837, address: ''}
 
 // Array of colors for different routes
-// const ROUTE_COLORS = [
-//   "#FF0000",
-//   "#00FF00",
-//   "#0000FF",
-//   "#FFA500",
-//   "#800080",
-//   "#008080",
-//   "#FF69B4",
-//   "#4B0082",
-//   "#FF4500",
-//   "#2E8B57",
-// ]
+const ROUTE_COLORS = [
+  "#FF0000",
+  "#00FF00",
+  "#0000FF",
+  "#FFA500",
+  "#800080",
+  "#008080",
+  "#FF69B4",
+  "#4B0082",
+  "#FF4500",
+  "#2E8B57",
+]
 
 interface Location {
   address: string
@@ -133,7 +133,7 @@ const CustomMap = () => {
           const direction = directionsResults[i]
           console.log({direction})
           if (direction) {
-            setDirections({routes: direction.routes, request: direction.request});
+            setDirections({routes: direction.routes, request: direction.request}, ROUTE_COLORS[i]);
           }
         }
       }
@@ -165,6 +165,16 @@ const CustomMap = () => {
         center={center}
         style={{width: '100vw', height: '100vh'}}
         mapId="map"
+        // zoomControl={true}
+        // scrollwheel={true}
+        // disableDoubleClickZoom={false}
+        // gestureHandling={'greedy'}
+        // options={{
+        //   zoomControl: true,
+        //   scrollwheel: true,
+        //   disableDoubleClickZoom: false,
+        //   draggable: true,
+        // }}
       >
         <AdvancedMarker ref={markerRef} position={endurance}>
           <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
