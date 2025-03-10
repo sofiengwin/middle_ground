@@ -82,12 +82,6 @@ function Directions({origin, destination}: {origin: google.maps.LatLngLiteral; d
     return () => directionsRenderer.setMap(null);
   }, [directionsService, directionsRenderer]);
 
-  // Update direction route
-  // useEffect(() => {
-  //   if (!directionsRenderer) return;
-  //   directionsRenderer.setRouteIndex(routeIndex);
-  // }, [routeIndex, directionsRenderer]);
-
   if (!leg) return null;
 
   return (

@@ -114,19 +114,6 @@ const CustomMap = () => {
 
       const directionsResults = await Promise.all(directionsPromises)
       console.log({directionsResults, result})
-      // let validIndex = 0
-      // newAddresses.forEach((addr, index) => {
-      //   if (addr.address) {
-      //     if (result.rows[validIndex].elements[0].status === "OK") {
-      //       newAddresses[index] = {
-      //         ...newAddresses[index],
-      //         distance: result.rows[validIndex].elements[0].distance.text,
-      //         directions: directionsResults[validIndex],
-      //       }
-      //     }
-      //     validIndex++
-      //   }
-      // })
 
       if(directionsResults) {
         for(let i = 0; i < directionsResults.length; i++) {
