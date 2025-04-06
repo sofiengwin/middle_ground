@@ -2,6 +2,8 @@ import {Map, AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-goog
 import {useCallback, useEffect, useState} from 'react';
 // import Directions from './Directions';
 import { useDirections } from './useDirections';
+// import Directions from './Directions';
+import useSearchPlaces from './hooks/useSearchPlaces';
 
 const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
 const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
@@ -57,8 +59,10 @@ const CustomMap = () => {
   // </APIProvider>
 
   const [markerRef, marker] = useAdvancedMarkerRef();
+  const { performSearch } = useSearchPlaces('restaurant');
 
   useEffect(() => {
+    performSearch()
     if (!marker) {
       return;
     }
