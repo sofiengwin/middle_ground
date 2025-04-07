@@ -1,8 +1,23 @@
+import { useMapsLibrary } from "@vis.gl/react-google-maps";
+import { useMemo } from "react";
 
 export default function useSearchPlaces(searchQuery: string) {
-  const service = new window.google.maps.places.PlacesService(document.createElement("div"))
+  // const placesLibrary = useMapsLibrary('places');
+  // console.log("Places library:", placesLibrary)
+  // if (!placesLibrary) {
+  //   throw("Places library not loaded")
+  // }
+
+  // const service = new placesLibrary.PlacesService(x)
+
+  const placesLibrary = useMapsLibrary('places');
+  const placesService = useMemo(
+    () => placesLibrary && new placesLibrary.PlacesService(document.createElement("div")),
+    [placesLibrary]
+  );
 
   const performSearch = (location = null) => {
+    
     const request = location
       ? {
           location,
@@ -11,7 +26,13 @@ export default function useSearchPlaces(searchQuery: string) {
         }
       : { query: searchQuery }
 
-    service.textSearch(request, (results, status) => {
+    if (!placesService) {
+      console.error("PlacesService not initialized")
+      return
+    }
+
+    placesService.textSearch(request, (results, status) => {
+      console.log({results, status})
       if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
         const topResults = results.slice(0, 10).map((place) => ({
           address: place.formatted_address || "",
@@ -39,3 +60,12 @@ export default function useSearchPlaces(searchQuery: string) {
 
   return { performSearch }
 }
+
+
+// const { library: placesLibrary, loading, error } = useMapsLibrary('places');
+
+// React.useEffect(() => {
+//     if (!loading && placesLibrary) {
+//         console.log('Places library loaded:', placesLibrary);
+//     }
+// }, [loading, placesLibrary]);

@@ -1,10 +1,10 @@
-import {Map, AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-google-maps';
+import {AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-google-maps';
 import {useCallback, useEffect, useState} from 'react';
 // import Directions from './Directions';
 import { useDirections } from './useDirections';
 // import Directions from './Directions';
 import useSearchPlaces from './hooks/useSearchPlaces';
-
+// 
 const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
 const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
 const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514, address: ''}
@@ -58,9 +58,9 @@ const CustomMap = () => {
   //   />
   // </APIProvider>
 
-  const [markerRef, marker] = useAdvancedMarkerRef();
-  const { performSearch } = useSearchPlaces('restaurant');
+  const { performSearch } = useSearchPlaces("brunch")
 
+  const [markerRef, marker] = useAdvancedMarkerRef();
   useEffect(() => {
     performSearch()
     if (!marker) {
@@ -142,33 +142,16 @@ const CustomMap = () => {
   return (
     <>
       <button onClick={calculateDistances}>Calculate</button>
-      <Map
-        zoom={12}
-        center={center}
-        style={{width: '100vw', height: '100vh'}}
-        mapId="map"
-        // zoomControl={true}
-        // scrollwheel={true}
-        // disableDoubleClickZoom={false}
-        // gestureHandling={'greedy'}
-        // options={{
-        //   zoomControl: true,
-        //   scrollwheel: true,
-        //   disableDoubleClickZoom: false,
-        //   draggable: true,
-        // }}
-      >
-        <AdvancedMarker ref={markerRef} position={endurance}>
-          <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-        </AdvancedMarker>
-        <AdvancedMarker ref={markerRef} position={george} />
-        <AdvancedMarker ref={markerRef} position={sofien} />
-        <AdvancedMarker ref={markerRef} position={bodunde} />
-        <AdvancedMarker ref={markerRef} position={tj} />
-        {/* <Directions origin={george} destination={center} /> */}
-        {/* <Directions origin={endurance} destination={center} />
-        <Directions origin={tj} destination={center} /> */}
-      </Map>
+      <AdvancedMarker ref={markerRef} position={endurance}>
+        <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+      </AdvancedMarker>
+      <AdvancedMarker ref={markerRef} position={george} />
+      <AdvancedMarker ref={markerRef} position={sofien} />
+      <AdvancedMarker ref={markerRef} position={bodunde} />
+      <AdvancedMarker ref={markerRef} position={tj} />
+      {/* <Directions origin={george} destination={center} /> */}
+      {/* <Directions origin={endurance} destination={center} />
+      <Directions origin={tj} destination={center} /> */}
     </>
   );
 };
