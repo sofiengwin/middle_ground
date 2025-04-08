@@ -1,7 +1,7 @@
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
-export default function useSearchPlaces(searchQuery: string) {
+export default function useSearchPlaces() {
   // const placesLibrary = useMapsLibrary('places');
   // console.log("Places library:", placesLibrary)
   // if (!placesLibrary) {
@@ -16,22 +16,21 @@ export default function useSearchPlaces(searchQuery: string) {
     [placesLibrary]
   );
 
-  const performSearch = (location = null) => {
-    
-    const request = location
-      ? {
-          location,
-          radius: 5000, // 5km radius
-          query: searchQuery,
-        }
-      : { query: searchQuery }
+  return useCallback((searchQuery: string) => {
+    // const request = location
+    //   ? {
+    //       location,
+    //       radius: 5000, // 5km radius
+    //       query: searchQuery,
+    //     }
+    //   : { query: searchQuery }
 
     if (!placesService) {
       console.error("PlacesService not initialized")
       return
     }
-
-    placesService.textSearch(request, (results, status) => {
+  
+    placesService.textSearch({ query: searchQuery }, (results, status) => {
       console.log({results, status})
       if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
         const topResults = results.slice(0, 10).map((place) => ({
@@ -56,16 +55,5 @@ export default function useSearchPlaces(searchQuery: string) {
       }
       // setIsSearching(false)
     })
-  }
-
-  return { performSearch }
-}
-
-
-// const { library: placesLibrary, loading, error } = useMapsLibrary('places');
-
-// React.useEffect(() => {
-//     if (!loading && placesLibrary) {
-//         console.log('Places library loaded:', placesLibrary);
-//     }
-// }, [loading, placesLibrary]);
+  }, [placesService]);
+};

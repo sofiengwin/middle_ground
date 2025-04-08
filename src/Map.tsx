@@ -58,11 +58,9 @@ const CustomMap = () => {
   //   />
   // </APIProvider>
 
-  const { performSearch } = useSearchPlaces("brunch")
-
+  const performSearch = useSearchPlaces()
   const [markerRef, marker] = useAdvancedMarkerRef();
   useEffect(() => {
-    performSearch()
     if (!marker) {
       return;
     }
@@ -142,6 +140,7 @@ const CustomMap = () => {
   return (
     <>
       <button onClick={calculateDistances}>Calculate</button>
+      <button onClick={() => performSearch('brunch')}>Search</button>
       <AdvancedMarker ref={markerRef} position={endurance}>
         <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
       </AdvancedMarker>
