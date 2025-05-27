@@ -10,50 +10,63 @@ import TextInput from './TextInput';
 import { useAutocompleteSuggestions } from '@/hooks/useAutocompleteSuggestions';
 
 interface ComboboxProps {
-  onSelect: (value: string) => void;
+  onSelect: (suggestion: google.maps.places.AutocompleteSuggestion) => void;
   label: string;
+  currentAddress?: string;
 }
 
 export default function Combobox({
   onSelect,
-  label
+  label,
+  currentAddress
 }: ComboboxProps) {
   const [location, setLocation] = useState('');
-  const {suggestions, isLoading, resetSession} = useAutocompleteSuggestions(location, {})
-  console.log({suggestions, isLoading, resetSession})
+  const {suggestions} = useAutocompleteSuggestions(location, {})
 
-  const filteredSuggestions = Array(10).fill(1)
-  // const filteredSuggestions = suggestions.filter((item) =>
-  //   item.toLowerCase().includes(filter.toLowerCase())
-  // );
   const placeholder = 'Select an option'
 
-  return (
-    <Command>
-      <TextInput
-        placeholder={placeholder}
-        type='text'
-        label={label}
-        value={location}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)}
-      />
-      <CommandList>
-        {filteredSuggestions.length === 0 ? (
-          <CommandEmpty>No results found.</CommandEmpty>
-        ) : (
-          suggestions.map((suggestion, index) => (
-            <CommandItem
-              key={index}
-              onSelect={(value) => {
-                console.log('Selected value:', value);
-                onSelect(value)
-              }}
-            >
-              {suggestion.placePrediction?.text.text}
-            </CommandItem>
-          ))
-        )}
-      </CommandList>
-    </Command>
-  );
+  if(currentAddress == location) {
+    return (
+      <Command>
+        <TextInput
+          placeholder={placeholder}
+          type='text'
+          label={label}
+          value={location}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)}
+        />
+      </Command>
+    );
+  } else {
+    return (
+      <Command>
+        <TextInput
+          placeholder={placeholder}
+          type='text'
+          label={label}
+          value={location}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)}
+        />
+        <CommandList>
+          {suggestions.length === 0 ? (
+            <CommandEmpty>No results found.</CommandEmpty>
+          ) : (
+            suggestions.map((suggestion, index) => {
+              return (
+              <CommandItem
+                key={index}
+                onSelect={(value) => {
+                  setLocation(value)
+                  onSelect(suggestion)
+                }}
+              >
+                {suggestion.placePrediction?.text.text}
+              </CommandItem>
+            )})
+          )}
+        </CommandList>
+      </Command>
+    );
+  }
+
 }

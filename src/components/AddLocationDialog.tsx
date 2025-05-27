@@ -14,7 +14,7 @@ import { useState } from "react";
 import { IUserLocation } from "@/contexts/AppContext";
 
 interface Props {
-  onOk: (name: string, userLocation?: IUserLocation) => void;
+  onOk: (name: string, userLocation: IUserLocation) => void;
 }
 
 export default function AddLocationDialog({onOk}: Props) {
