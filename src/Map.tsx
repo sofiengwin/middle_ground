@@ -1,5 +1,6 @@
 import {AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-google-maps';
 import {useEffect} from 'react';
+import { useAppContext } from './contexts/AppContext';
 // import Directions from './Directions';
 // import { useDirections } from './useDirections';
 // import Directions from './Directions';
@@ -57,7 +58,9 @@ const CustomMap = () => {
   // </APIProvider>
 
   // const performSearch = useSearchPlaces()
+  const {locations, mainAddress} = useAppContext()
   const [markerRef, marker] = useAdvancedMarkerRef();
+  console.log({locations, mainAddress});
   useEffect(() => {
     if (!marker) {
       return;
@@ -137,16 +140,19 @@ const CustomMap = () => {
 
   return (
     <>
-      <AdvancedMarker ref={markerRef} position={endurance}>
-      <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-      </AdvancedMarker>
-      <AdvancedMarker ref={markerRef} position={george} />
-      <AdvancedMarker ref={markerRef} position={sofien} />
-      <AdvancedMarker ref={markerRef} position={bodunde} />
-      <AdvancedMarker ref={markerRef} position={tj} />
-      {/* <Directions origin={george} destination={center} /> */}
-      {/* <Directions origin={endurance} destination={center} />
-      <Directions origin={tj} destination={center} /> */}
+      {mainAddress.location && (
+        <AdvancedMarker ref={markerRef} position={mainAddress.location}>
+          <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+        </AdvancedMarker>
+      )}
+      {Object.values(locations).map((location, index) => {
+        // console.log("Location:", location)
+        if(location.location) {
+          return <AdvancedMarker ref={markerRef} position={tj} key={index} />
+        }
+
+      }
+      )}
     </>
   );
 };

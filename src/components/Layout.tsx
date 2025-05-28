@@ -6,7 +6,7 @@ import AddLocationDialog from "./AddLocationDialog"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const {locations, updateLocation, mainAddress, updateMainAddress, addLocation} = useAppContext();
-  console.log("hello", {mainAddress, locations})
+  // console.log("hello", {mainAddress, locations})
   return (
     <div className="container">
       <div className="grid grid-cols-2 gap-6">
