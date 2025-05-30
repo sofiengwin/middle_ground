@@ -1,4 +1,4 @@
-import {AdvancedMarker, useAdvancedMarkerRef, Pin} from '@vis.gl/react-google-maps';
+import {AdvancedMarker, useAdvancedMarkerRef, Pin, AdvancedMarkerWithRef} from '@vis.gl/react-google-maps';
 import {useEffect} from 'react';
 import { useAppContext } from './contexts/AppContext';
 // import Directions from './Directions';
@@ -141,14 +141,14 @@ const CustomMap = () => {
   return (
     <>
       {mainAddress.location && (
-        <AdvancedMarker ref={markerRef} position={mainAddress.location}>
+        <AdvancedMarkerWithRef position={mainAddress.location}>
           <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-        </AdvancedMarker>
+        </AdvancedMarkerWithRef>
       )}
       {Object.values(locations).map((location, index) => {
         // console.log("Location:", location)
         if(location.location) {
-          return <AdvancedMarker ref={markerRef} position={tj} key={index} />
+          return <AdvancedMarkerWithRef position={tj} key={index} />
         }
 
       }
