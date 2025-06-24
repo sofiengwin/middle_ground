@@ -4,15 +4,16 @@ import './App.css'
 import CustomMap from './Map'
 import Layout from './components/Layout'
 import AppProvider from './components/AppProvider'
+import AddressesCollection from './components/AddressesCollection'
 
-const center = {lat: 49.18140440608156, lng: -122.84811819468837, address: ''}
+// const center = {lat: 49.18140440608156, lng: -122.84811819468837, address: ''}
 
 function App() {
   return (
     <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAP_KEY}> 
     
     <AppProvider>
-      <Layout>
+      {/* <Layout>
         <Map
           zoom={12}
           center={center}
@@ -21,7 +22,8 @@ function App() {
         >
           <CustomMap />
         </Map>
-      </Layout>
+      </Layout> */}
+      <AddressesCollection />
     </AppProvider>
     </APIProvider>
   )

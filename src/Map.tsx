@@ -1,20 +1,19 @@
-import {AdvancedMarker, useAdvancedMarkerRef, Pin, AdvancedMarkerWithRef} from '@vis.gl/react-google-maps';
-import {useEffect} from 'react';
+import {AdvancedMarker, Pin} from '@vis.gl/react-google-maps';
 import { useAppContext } from './contexts/AppContext';
 // import Directions from './Directions';
 // import { useDirections } from './useDirections';
 // import Directions from './Directions';
 // import useSearchPlaces from './hooks/useSearchPlaces';
 // 
-const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
-const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
-const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514, address: ''}
-const tj = {lat: 49.276060472781246, lng: -122.82504594341755, address: ''}
-const endurance = {lat: 49.19354056002209, lng: -122.79310430109112, address: ''}
+// const george = {lat: 49.204542571381296, lng: -122.90846930109086, address: ''}
+// const sofien = {lat: 49.107051518586125, lng: -122.80181147410804, address: ''}
+// const bodunde = {lat: 49.200849440419006, lng: -122.91437387225514, address: ''}
+// const tj = {lat: 49.276060472781246, lng: -122.82504594341755, address: ''}
+// const endurance = {lat: 49.19354056002209, lng: -122.79310430109112, address: ''}
 // const center = {lat: 49.18140440608156, lng: -122.84811819468837, address: ''}
 
 // Array of colors for different routes
-// const ROUTE_COLORS = [
+// const ROUTE_COLORS = [j
 //   "#FF0000",
 //   "#00FF00",
 //   "#0000FF",
@@ -59,16 +58,16 @@ const CustomMap = () => {
 
   // const performSearch = useSearchPlaces()
   const {locations, mainAddress} = useAppContext()
-  const [markerRef, marker] = useAdvancedMarkerRef();
+  // const [markerRef, marker] = useAdvancedMarkerRef();
   console.log({locations, mainAddress});
-  useEffect(() => {
-    if (!marker) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!marker) {
+  //     return;
+  //   }
     
 
-    // do something with marker instance here
-  }, [marker]);
+  //   // do something with marker instance here
+  // }, [marker]);
 
   // const calculateDirections = useCallback(async (origin: Location, destination: Location, index: number) => {
   //   if (!window.google) return null
@@ -141,14 +140,14 @@ const CustomMap = () => {
   return (
     <>
       {mainAddress.location && (
-        <AdvancedMarkerWithRef position={mainAddress.location}>
+        <AdvancedMarker position={mainAddress.location}>
           <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
-        </AdvancedMarkerWithRef>
+        </AdvancedMarker>
       )}
-      {Object.values(locations).map((location, index) => {
+      {Object.values(locations).map((userLocation, index) => {
         // console.log("Location:", location)
-        if(location.location) {
-          return <AdvancedMarkerWithRef position={tj} key={index} />
+        if(userLocation.location) {
+          return <AdvancedMarker position={userLocation.location} key={index} />
         }
 
       }

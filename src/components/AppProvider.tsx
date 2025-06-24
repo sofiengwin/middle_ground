@@ -1,10 +1,15 @@
 import { AppContext, IUserLocation } from "@/contexts/AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function AppProvider({children}: {children: React.ReactNode}) {
   const [locations, setLocations] = useState<Record<string, IUserLocation>>({});
   const [mainAddress, setMainAddress] = useState({});
+
+  useEffect(() => {
+    const savedLocations = JSON.parse(localStorage.getItem('locationsKey') ?? '[]')
+    setLocations(savedLocations)
+  }, [])
 
   const updateLocation = async (name: string, suggestion: google.maps.places.AutocompleteSuggestion) => {
     const {address, location} = await getLocationFromSuggestion(suggestion);
@@ -12,17 +17,21 @@ export default function AppProvider({children}: {children: React.ReactNode}) {
     setLocations((prev) => {
       return {...prev, [name]: {name: name, address: address, location: location}}
     })
+    console.log('updating locations')
+    saveLocations();
   }
 
   const addLocation = (name: string, userLocation: IUserLocation) => {
     setLocations((userLocations) => {
       return {...userLocations, [name]: userLocation}
     })
+    console.log('setting Location')
+    saveLocations();
   }
 
   const updateMainAddress = async (suggestion: google.maps.places.AutocompleteSuggestion) => {
     const {address, location} = await getLocationFromSuggestion(suggestion);
-    console.log("updateMainAddress", {address, location})
+    // console.log("updateMainAddress", {address, location})
 
     setMainAddress((prev) => {
       return {...prev, address: address, location: location}
@@ -42,6 +51,11 @@ export default function AppProvider({children}: {children: React.ReactNode}) {
       address: suggestion.placePrediction?.text.text,
       location: lat && lng ? {lng: lng, lat: lat} : undefined
     }
+  }
+
+  const saveLocations = () => {
+    console.log({locations})
+    localStorage.setItem('locationsKey', JSON.stringify(locations))
   }
 
 
